@@ -20,6 +20,7 @@ use App\Http\Controllers\API\RegisterController;
 // });
 
 Route::post('register', [\App\Http\Controllers\API\RegisterController::class, 'register']);
+Route::post('login', [\App\Http\Controllers\API\RegisterController::class, 'login']);
 
 // Route::middleware('auth:api')->group(function() {
 //     Route::resource('student', StudentController::class);
