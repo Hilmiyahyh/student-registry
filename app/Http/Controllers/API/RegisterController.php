@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -14,7 +15,7 @@ class RegisterController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|unique:users',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
@@ -43,16 +44,40 @@ class RegisterController extends Controller
         }
     }
 
-    // public function login(Request $request){
-    //     if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-    //         $user = Auth::user();
-    //         $success['token'] =  $user->createToken('MyApp')-> accessToken;
-    //         $success['name'] =  $user->name;
+    public function login(Request $request){
+        $credentials = request(['email', 'password']);
+        
+        if(!Auth::attempt($credentials)){
+            return response()->json([
+                'message' => 'You are unauthorize to access this page!'
+            ], 401);
+        }
+        $validator = $request->user();
 
-    // return $this->sendResponse($success, 'User login successfully.');
+        $tokenResult = $validator->createToken('MyApp');
+        $token = $tokenResult->token;
+
+
+        // if($request->remember_me){
+        //     $token->expires_at = Carbon::now()->addWeek(1);
+        // }
+
+        return response()->json([
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+                )->toDateString()
+            ]);
+    }
+
+    // public function logout(Request $request){
+    //     $token = $request->user()->token();
+    //     $token->revoke();
+    //     return response()->json([
+    //         'message' => 'You have successfully logged out!',
+    //     ]);
     // }
-    // else{
-    //     return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
-    // }
-    // }
+
+
 }
