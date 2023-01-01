@@ -71,12 +71,14 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        // DISPLAY THE LIST OF STUDENTS INFO IN DB
-        $student = Student::simplePaginate(1);
+        // SEARCHED STUDENT INFO
+
+        $student = Student::find($student);
         return response()->json([
             'student' => $student,
             'status' => true
         ],200);
+
 
     }
 
