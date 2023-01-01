@@ -80,7 +80,6 @@ class StudentController extends Controller
             'status' => true
         ],200);
 
-
     }
 
     /**
@@ -104,7 +103,6 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
 
-        // $student->update($request->all());
         $input = $request->all();
 
         $validation = Validator::make($input, [
@@ -130,15 +128,8 @@ class StudentController extends Controller
             ]);
         }
 
-
-        // $student->name = $request->name;
-        // $student->email = $request->email;
-        // $student->address =$request->address;
-        // $student->sCourse =$request->sCourse;
-        // $student->save();
-
         return response()->json([
-            'message' =>'Update Succesfully',
+            'message' =>'Update Successfully',
             'student' => $student,
         ]);
 
@@ -152,9 +143,12 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        $student->delete();
+// DELETE STUDENT BASED ON ID
+        Student::where('id', $student['id'])->delete();
         return response()->json([
-            'message' =>'Delete Successfully',
-        ], 204);
+            'message' =>'Student Deleted!',
+
+        ]);
+
     }
 }
