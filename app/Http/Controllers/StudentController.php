@@ -72,7 +72,7 @@ class StudentController extends Controller
     {
         // SEARCHED STUDENT INFO        
 
-        $student = Student::find($student['name']);
+        $student = Student::find($student['id']);
         return response()->json([
             'student' => $student,
             'status' => true
