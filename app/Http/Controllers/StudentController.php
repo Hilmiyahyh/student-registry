@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -73,7 +74,7 @@ class StudentController extends Controller
     {
         // SEARCHED STUDENT INFO
 
-        $student = Student::find($student);
+        $student = Student::find($student['id']);
         return response()->json([
             'student' => $student,
             'status' => true
@@ -103,7 +104,31 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
 
-        $student->update($request->all());
+        // $student->update($request->all());
+        $input = $request->all();
+
+        $validation = Validator::make($input, [
+            'name' => 'required',
+            'email' => 'required|email|unique:student,email' .$student['id'],
+            'address' => 'required',
+            'sCourse' => 'required',
+        ]);
+        Student::where('id',  $student['id'])->update($input);
+
+
+        if ($validation) {
+            return response()->json([
+                'message' => 'Student successfully updated!',
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'address' => $request['address'],
+                'sCourse' =>  $request['sCourse']
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Student cannot be updated!',
+            ]);
+        }
 
 
         // $student->name = $request->name;
