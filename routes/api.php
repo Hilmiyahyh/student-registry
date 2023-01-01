@@ -21,11 +21,8 @@ use App\Http\Controllers\StudentController;
     // Route::post('logout', [\App\Http\Controllers\API\RegisterController::class, 'logout']);
 
 // });
+
 Route::post('register', [\App\Http\Controllers\API\RegisterController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\API\RegisterController::class, 'login']);
 Route::apiResource('student', \App\Http\Controllers\StudentController::class);
-// Route::apiResource('student', StudentController::class)->middleware('auth:api');
 
-// Route::middleware('auth:api')->group(function() {
-
-// });

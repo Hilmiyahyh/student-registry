@@ -18,16 +18,14 @@ class StudentController extends Controller
         // DISPLAY THE LIST OF STUDENTS INFO IN DB
 
         $student = Student::simplePaginate(1);
+        // $student = Student::all()->map(function($student){
+        //     return[$student['name'], $student['address']];
+        // });
         return response()->json([
             'student' => $student,
             'status' => true
         ],200);
 
-        // $student = Student::paginate(10);
-        // return response()->json([
-        //     'status' =>true,
-        //     'student' => [],
-        // ]);
         }
 
     /**
@@ -60,7 +58,7 @@ class StudentController extends Controller
         // TO DISPLAY MESSAGE WHEN ADDED SUCCEED
         return response()->json([
             'message' =>'Student successfully added!',
-            'student' => $student,
+            // 'student' => $student,
         ]);
     }
 
@@ -72,9 +70,9 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        // SEARCHED STUDENT INFO
+        // SEARCHED STUDENT INFO        
 
-        $student = Student::find($student['id']);
+        $student = Student::find($student['name']);
         return response()->json([
             'student' => $student,
             'status' => true
@@ -112,7 +110,6 @@ class StudentController extends Controller
             'sCourse' => 'required',
         ]);
         Student::where('id',  $student['id'])->update($input);
-
 
         if ($validation) {
             return response()->json([
