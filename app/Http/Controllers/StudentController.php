@@ -14,12 +14,19 @@ class StudentController extends Controller
      */
     public function index()
     {
+        // DISPLAY THE LIST OF STUDENTS INFO IN DB
 
-        $student = Student::paginate(10);
+        $student = Student::simplePaginate(1);
         return response()->json([
-            'status' =>true,
-            'student' => [],
-        ]);
+            'student' => $student,
+            'status' => true
+        ],200);
+
+        // $student = Student::paginate(10);
+        // return response()->json([
+        //     'status' =>true,
+        //     'student' => [],
+        // ]);
         }
 
     /**
@@ -65,7 +72,7 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         // DISPLAY THE LIST OF STUDENTS INFO IN DB
-        $student = Student::all();
+        $student = Student::simplePaginate(1);
         return response()->json([
             'student' => $student,
             'status' => true
